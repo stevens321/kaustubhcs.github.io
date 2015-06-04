@@ -1,0 +1,804 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+   <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-63682191-1', 'auto');
+  ga('send', 'pageview');
+</script>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>The Keyword Finder Function</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-06-04"><meta name="DC.source" content="keyword_finder_publishing.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>The Keyword Finder Function</h1><!--introduction--><p>The actual algorithm for the entire paper lies here. This function has few dependancies on custom built function which are not listed here although their source can be obtained. The</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Initialisation</a></li><li><a href="#2">Developer's Settings</a></li><li><a href="#4">Object to find</a></li><li><a href="#6">Output pure object</a></li><li><a href="#7">Output to Scene</a></li><li><a href="#8">Image Sharpening Custom Function</a></li><li><a href="#9">Use of SURF Feature generation</a></li><li><a href="#14">Generate Feature descriptors</a></li><li><a href="#15">Match feature descriptors</a></li><li><a href="#16">Display matched descriptors</a></li><li><a href="#17">K-Means ML Algorithm</a></li><li><a href="#18">Algo Breakdown</a></li><li><a href="#19">Sorting Algo</a></li><li><a href="#20">Display of Sorter and Mapped Sorted array for F Measure calculations</a></li><li><a href="#21">Plotting Clustered Points</a></li><li><a href="#22">Convex Hull Algorithm Call</a></li><li><a href="#25">Minimal area rectangle around data</a></li><li><a href="#26">Minimum Eigenvalue features to generate a Hybrid engine for computation.</a></li><li><a href="#27">Generation of Minimum Eigenvalue features</a></li><li><a href="#32">K-Means ML Algorithm for Minimum Eigenvalue Feature Algorithm</a></li><li><a href="#33">Algo Breakdown for Minimum Eigenvalue Features</a></li><li><a href="#35">Sorting Algorithm</a></li><li><a href="#36">Plotting Minimum Eigenvalue Features Clustered Points</a></li><li><a href="#37">Convex Hull Algorithm for Minimum Eigenvalue Features</a></li><li><a href="#38">Minimal area rectangle around data for Minimum Eigenvalue Features</a></li></ul></div><h2>Initialisation<a name="1"></a></h2><p>One image pair of bject and scene are picked up from the generated database for further evaluation. Weighing of image depending on the matchmetric rate is not carried out in this function.</p><pre class="codeinput">scene_path = <span class="string">'D:\Research\Paper Images\OBJ 1M.jpg'</span>;
+object_path = <span class="string">'D:\Research\Paper Images\OBJ 1B.jpg'</span>;
+dmode = 1;
+object_name = <span class="string">'Motherboard Chip'</span>;
+image_sharpening = 0;
+</pre><h2>Developer's Settings<a name="2"></a></h2><p>Set Developer's mode to 1 to enter developers settings. Because of the complexity of the algorithm and variation of behavior of the algorithm to different inputs provided to the algorithm it was mandatory to include the developer&#8217;s settings for making it accessible for users to debug any special case input errors.</p><pre class="codeinput">mode = 0;
+dmode_2 = dmode;
+dmode_2 = 1;
+[~, object_name2, ~] = fileparts(object_path);
+</pre><p>For overloading the function</p><pre class="codeinput"><span class="keyword">if</span> nargin &lt; 3
+    dmode =   0;
+  <span class="keyword">end</span>
+<span class="keyword">if</span> nargin &lt; 4
+    object_name = object_name2;
+<span class="keyword">end</span>
+</pre><h2>Object to find<a name="4"></a></h2><p>The database loaded object is converted to grayscale.</p><pre class="codeinput">boxImage = imread(object_path);
+</pre><p>Save the original colour image for display before obtaining luminsescence values and overwriting the original object created.</p><pre class="codeinput">org_img = boxImage;
+boxImage = rgb2gray(boxImage);
+</pre><h2>Output pure object<a name="6"></a></h2><p>We output the object matrix of greyscale values on the display if developer's mode is ON</p><pre class="codeinput"><span class="keyword">if</span> dmode
+   figure();
+   imshow(org_img);
+   title(object_name);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 17% 
+</pre><img vspace="5" hspace="5" src="keyword_finder_publishing_01.png" alt=""> <h2>Output to Scene<a name="7"></a></h2><p>Image with multiple objects including target object</p><pre class="codeinput">sceneImage = imread(scene_path);
+org_scene = sceneImage;
+sceneImage = rgb2gray(sceneImage);
+<span class="keyword">if</span> dmode
+figure();
+imshow(org_scene);
+title(<span class="string">'Scene Image'</span>);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 17% 
+</pre><img vspace="5" hspace="5" src="keyword_finder_publishing_02.png" alt=""> <h2>Image Sharpening Custom Function<a name="8"></a></h2><p>Image sharpening is a custom dual gradient based function that is only used if the input image consists of fewer luminescence variations or consists of considerable amount of noise.</p><pre class="codeinput"><span class="keyword">if</span> image_sharpening
+    sceneImage = image_sharpen (sceneImage,dmode);
+<span class="keyword">end</span>
+</pre><h2>Use of SURF Feature generation<a name="9"></a></h2><pre class="codeinput">boxPoints = detectSURFFeatures(boxImage);
+scenePoints = detectSURFFeatures(sceneImage);
+</pre><p>Display object output if asked</p><pre class="codeinput"><span class="keyword">if</span> dmode_2
+</pre><pre class="codeinput">figure;
+imshow(org_img);
+title(<span class="string">'Feature Points from Box Image'</span>);
+hold <span class="string">on</span>;
+plot(boxPoints);
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 17% 
+</pre><img vspace="5" hspace="5" src="keyword_finder_publishing_03.png" alt=""> <p>Display scene output if asked</p><pre class="codeinput">figure;
+imshow(org_scene);
+title(<span class="string">'Feature Points from Scene Image'</span>);
+hold <span class="string">on</span>;
+plot(scenePoints);
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 17% 
+</pre><img vspace="5" hspace="5" src="keyword_finder_publishing_04.png" alt=""> <pre class="codeinput"><span class="keyword">end</span>
+</pre><h2>Generate Feature descriptors<a name="14"></a></h2><pre class="codeinput">[boxFeatures, boxPoints] = extractFeatures(boxImage, boxPoints);
+[sceneFeatures, scenePoints] = extractFeatures(sceneImage, scenePoints);
+</pre><h2>Match feature descriptors<a name="15"></a></h2><pre class="codeinput">[boxPairs, matchmetric] = matchFeatures(boxFeatures, sceneFeatures);
+</pre><h2>Display matched descriptors<a name="16"></a></h2><pre class="codeinput">matchedBoxPoints = boxPoints(boxPairs(:, 1), :);
+matchedScenePoints = scenePoints(boxPairs(:, 2), :);
+<span class="keyword">if</span> dmode_2
+figure;
+showMatchedFeatures(org_img, org_scene, matchedBoxPoints, <span class="keyword">...</span>
+    matchedScenePoints, <span class="string">'montage'</span>);
+title(<span class="string">'Direct Matching'</span>);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 17% 
+</pre><img vspace="5" hspace="5" src="keyword_finder_publishing_05.png" alt=""> <h2>K-Means ML Algorithm<a name="17"></a></h2><p>We form cluster of feature points based on their location, thus enabling us to increase the probability of finding the correct location of matched points. A uniform distribution of cluster of the datapoints represents the abscence of the object in the scene or presence of another image completely identical to the object image.</p><pre class="codeinput">k = 10;
+fprintf(<span class="string">'Value of K for K-Means Algorithm = %d\n'</span>,k);
+idx = kmeans(matchedScenePoints.Location,k);
+</pre><pre class="codeoutput">Value of K for K-Means Algorithm = 10
+</pre><h2>Algo Breakdown<a name="18"></a></h2><p>For the effective plotting of the clustered points on to the image with colour variations.</p><pre class="codeinput">ct3 = k;
+<span class="keyword">while</span> (ct3 &gt; 0)
+    sorter(ct3) = 0;
+    mapped_sorted_array(ct3) = 0;
+    ct3 = ct3 - 1;
+<span class="keyword">end</span>
+[s_idx,~] = size(idx);
+ct2 = s_idx;
+<span class="keyword">while</span> (ct2 &gt; 0)
+    sorter(idx(ct2)) = sorter(idx(ct2)) + 1;
+    ct2 = ct2 - 1;
+<span class="keyword">end</span>
+</pre><h2>Sorting Algo<a name="19"></a></h2><pre class="codeinput">maxn = max(sorter);
+stored_maxn = maxn;
+global_counter = 1;
+flag_1 = 0;
+endpoint = 1;
+flag_3 = 1;
+<span class="keyword">while</span> (maxn &gt; -1)
+ct4 = k;
+<span class="keyword">while</span> (ct4 &gt; 0)
+    <span class="keyword">if</span> (sorter(ct4) == maxn)
+        <span class="keyword">if</span> (flag_1 == 1 &amp;&amp; flag_3 == 1)
+            endpoint = endpoint + 1;
+        <span class="keyword">end</span>
+        flag_1 = 1;
+        mapped_sorted_array(global_counter) = ct4;
+        global_counter = global_counter + 1;
+    <span class="keyword">end</span>
+ct4 = ct4 - 1;
+<span class="keyword">end</span>
+flag_1 = 0;
+flag_3 = 0;
+maxn = maxn - 1;
+<span class="keyword">end</span>
+</pre><h2>Display of Sorter and Mapped Sorted array for F Measure calculations<a name="20"></a></h2><pre class="codeinput">sorter
+mapped_sorted_array
+fprintf(<span class="string">'\n\nTotal Database Size = %f \n'</span>,s_idx);
+fprintf(<span class="string">'Values Selected by Algo (TP + FP) = %f (Number of Points in Cluster with Maximum Points)\n'</span>,stored_maxn);
+</pre><pre class="codeoutput">
+sorter =
+
+    33    39    26    48    30    29    34    11    99    39
+
+
+mapped_sorted_array =
+
+     9     4    10     2     7     1     5     6     3     8
+
+
+
+Total Database Size = 388.000000 
+Values Selected by Algo (TP + FP) = 99.000000 (Number of Points in Cluster with Maximum Points)
+</pre><h2>Plotting Clustered Points<a name="21"></a></h2><p>The following is independent of developer's settings as it plays an important role in generation of F1 Score.</p><pre class="codeinput">figure;
+imshow(org_scene);
+title(<span class="string">'K-Means Clustering'</span>);
+hold <span class="string">on</span>;
+ct = matchedScenePoints.Count;
+spacer_multiplier = 0;
+<span class="keyword">while</span> (ct &gt; 0)
+ctr = k;
+<span class="keyword">while</span> (ctr &gt; 0)
+<span class="keyword">if</span> (idx(ct) == ctr)
+    aux_ct1 = k;
+    <span class="keyword">while</span> (aux_ct1 &gt; 0)
+        <span class="keyword">if</span> (mapped_sorted_array(aux_ct1) == ctr)
+            positon_cood = aux_ct1;
+        <span class="keyword">end</span>
+        aux_ct1 = aux_ct1 - 1;
+    <span class="keyword">end</span>
+    string_number = int2str(positon_cood);
+    <span class="keyword">if</span> (positon_cood &lt; endpoint + 1)
+        text((double(matchedScenePoints.Location(ct,1)) + ct * spacer_multiplier)<span class="keyword">...</span>
+            ,double(matchedScenePoints.Location(ct,2))<span class="keyword">...</span>
+            ,string_number,<span class="string">'Color'</span>,[1 0 0]);
+    <span class="keyword">else</span>
+        <span class="keyword">if</span> (k &lt; 20)
+            red = 0;
+            green = 1;
+            blue = 0;
+        <span class="keyword">elseif</span> (positon_cood &lt; (k / 3))
+            red = 0.01 * positon_cood;
+            green = 0.5;
+            blue = 0.5;
+        <span class="keyword">elseif</span> (positon_cood &lt; (2*k/3))
+            red = 0.7;
+            green = 0.01 * positon_cood;
+            blue = 0;
+        <span class="keyword">else</span>
+            red = 0.01 * (k - positon_cood);
+            green = 0;
+            blue = 0.01 * positon_cood;
+        <span class="keyword">end</span>
+        text((double(matchedScenePoints.Location(ct,1)) + ct * spacer_multiplier)<span class="keyword">...</span>
+            ,double(matchedScenePoints.Location(ct,2))<span class="keyword">...</span>
+            ,string_number,<span class="string">'Color'</span>,[red green blue]);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+    ctr = ctr - 1;
+<span class="keyword">end</span>
+    ct = ct - 1;
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 17% 
+</pre><img vspace="5" hspace="5" src="keyword_finder_publishing_06.png" alt=""> <h2>Convex Hull Algorithm Call<a name="22"></a></h2><p>For plotting a polygon onto the obtained precise object location such that the points obtained to be engulfed either lie <b>on</b> the polygon or <b>inside</b> it.</p><p>Counter for loops</p><pre class="codeinput">ct5 = s_idx;
+ct6 = 1;
+</pre><p>Rearrangement of points for obtaining sorted database for further display and processing.</p><pre class="codeinput"><span class="keyword">while</span> (ct5 &gt; 0)
+   <span class="keyword">if</span> (idx(ct5) == mapped_sorted_array(1))
+   forwarded_points(ct6,1) = matchedScenePoints.Location(ct5,1);
+   forwarded_points(ct6,2) = matchedScenePoints.Location(ct5,2);
+   ct6 = ct6 + 1;
+   <span class="keyword">end</span>
+ct5 = ct5 - 1;
+<span class="keyword">end</span>
+</pre><h2>Minimal area rectangle around data<a name="25"></a></h2><p>We also draw a square around the object using polygon points to get the location of object.</p><pre class="codeinput">x = matchedScenePoints.Location(:,1);
+y = matchedScenePoints.Location(:,2);
+[xrect,yrect] = minboundrect(double(x),double(y));
+figure;
+imshow(org_scene);
+title(<span class="string">' Minimal area rectangle'</span>);
+hold <span class="string">on</span>;
+plot(x,y,<span class="string">'ro'</span>,xrect,yrect,<span class="string">'b-'</span>);
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 17% 
+</pre><img vspace="5" hspace="5" src="keyword_finder_publishing_07.png" alt=""> <h2>Minimum Eigenvalue features to generate a Hybrid engine for computation.<a name="26"></a></h2><h2>Generation of Minimum Eigenvalue features<a name="27"></a></h2><pre class="codeinput">boxPoints = detectMinEigenFeatures(boxImage);
+scenePoints = detectMinEigenFeatures(sceneImage);
+</pre><p>Display of features of Object image of Minimum Eigenvalue Features</p><pre class="codeinput"><span class="keyword">if</span> dmode_2
+</pre><pre class="codeinput">figure;
+imshow(org_img);
+title(<span class="string">'Feature Points from Box Image'</span>);
+hold <span class="string">on</span>;
+plot(boxPoints);
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 17% 
+</pre><img vspace="5" hspace="5" src="keyword_finder_publishing_08.png" alt=""> <p>Display of features of Scene image of Minimum Eigenvalue Features</p><pre class="codeinput">figure;
+imshow(org_scene);
+title(<span class="string">'Feature Points from Scene Image'</span>);
+hold <span class="string">on</span>;
+plot(scenePoints);
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 17% 
+</pre><img vspace="5" hspace="5" src="keyword_finder_publishing_09.png" alt=""> <pre class="codeinput"><span class="keyword">end</span>
+</pre><h2>K-Means ML Algorithm for Minimum Eigenvalue Feature Algorithm<a name="32"></a></h2><pre class="codeinput">k = 10;
+fprintf(<span class="string">'Value of K for K-Means Algorithm = %d\n'</span>,k);
+matchedScenePoints = scenePoints;
+idx = kmeans(matchedScenePoints.Location,k);
+</pre><pre class="codeoutput">Value of K for K-Means Algorithm = 10
+</pre><h2>Algo Breakdown for Minimum Eigenvalue Features<a name="33"></a></h2><p>Exactly same as previously done except now with Minimum Eigenvalue Features</p><p>Counters for loops</p><pre class="codeinput">ct3 = k;
+<span class="keyword">while</span> (ct3 &gt; 0)
+    sorter(ct3) = 0;
+    mapped_sorted_array(ct3) = 0;
+    ct3 = ct3 - 1;
+<span class="keyword">end</span>
+[s_idx,~] = size(idx);
+ct2 = s_idx;
+<span class="keyword">while</span> (ct2 &gt; 0)
+    sorter(idx(ct2)) = sorter(idx(ct2)) + 1;
+    ct2 = ct2 - 1;
+<span class="keyword">end</span>
+</pre><h2>Sorting Algorithm<a name="35"></a></h2><p>For generation of sorted clustered points.</p><pre class="codeinput">maxn = max(sorter);
+stored_maxn = maxn;
+global_counter = 1;
+flag_1 = 0;
+endpoint = 1;
+flag_3 = 1;
+<span class="keyword">while</span> (maxn &gt; -1)
+ct4 = k;
+<span class="keyword">while</span> (ct4 &gt; 0)
+    <span class="keyword">if</span> (sorter(ct4) == maxn)
+        <span class="keyword">if</span> (flag_1 == 1 &amp;&amp; flag_3 == 1)
+            endpoint = endpoint + 1;
+        <span class="keyword">end</span>
+        flag_1 = 1;
+        mapped_sorted_array(global_counter) = ct4;
+        global_counter = global_counter + 1;
+    <span class="keyword">end</span>
+ct4 = ct4 - 1;
+<span class="keyword">end</span>
+flag_1 = 0;
+flag_3 = 0;
+maxn = maxn - 1;
+<span class="keyword">end</span>
+sorter
+mapped_sorted_array
+fprintf(<span class="string">'\n\nTotal Database Size = %f \n'</span>,s_idx);
+fprintf(<span class="string">'Values Selected by Algo (TP + FP) = %f (Number of Points in Cluster with Maximum Points)\n'</span>,stored_maxn);
+</pre><pre class="codeoutput">
+sorter =
+
+  Columns 1 through 6
+
+        1995        4616        4119        3058        3195        2627
+
+  Columns 7 through 10
+
+        2588        3476        3561        2991
+
+
+mapped_sorted_array =
+
+     2     3     9     8     5     4    10     6     7     1
+
+
+
+Total Database Size = 32226.000000 
+Values Selected by Algo (TP + FP) = 4616.000000 (Number of Points in Cluster with Maximum Points)
+</pre><h2>Plotting Minimum Eigenvalue Features Clustered Points<a name="36"></a></h2><pre class="codeinput">figure;
+imshow(org_scene);
+title(<span class="string">'K-Means Clustering'</span>);
+hold <span class="string">on</span>;
+ct = matchedScenePoints.Count;
+spacer_multiplier = 0;
+<span class="keyword">while</span> (ct &gt; 0)
+ctr = k;
+<span class="keyword">while</span> (ctr &gt; 0)
+<span class="keyword">if</span> (idx(ct) == ctr)
+    aux_ct1 = k;
+    <span class="keyword">while</span> (aux_ct1 &gt; 0)
+        <span class="keyword">if</span> (mapped_sorted_array(aux_ct1) == ctr)
+            positon_cood = aux_ct1;
+        <span class="keyword">end</span>
+        aux_ct1 = aux_ct1 - 1;
+    <span class="keyword">end</span>
+    string_number = int2str(positon_cood);
+    <span class="keyword">if</span> (positon_cood &lt; endpoint + 1)
+        text((double(matchedScenePoints.Location(ct,1)) + ct * spacer_multiplier)<span class="keyword">...</span>
+            ,double(matchedScenePoints.Location(ct,2))<span class="keyword">...</span>
+            ,string_number,<span class="string">'Color'</span>,[1 0 0]);
+    <span class="keyword">else</span>
+        <span class="keyword">if</span> (k &lt; 20)
+            red = 0;
+            green = 1;
+            blue = 0;
+        <span class="keyword">elseif</span> (positon_cood &lt; (k / 3))
+            red = 0.01 * positon_cood;
+            green = 0.5;
+            blue = 0.5;
+        <span class="keyword">elseif</span> (positon_cood &lt; (2*k/3))
+            red = 0.7;
+            green = 0.01 * positon_cood;
+            blue = 0;
+        <span class="keyword">else</span>
+            red = 0.01 * (k - positon_cood);
+            green = 0;
+            blue = 0.01 * positon_cood;
+        <span class="keyword">end</span>
+        text((double(matchedScenePoints.Location(ct,1)) + ct * spacer_multiplier)<span class="keyword">...</span>
+            ,double(matchedScenePoints.Location(ct,2))<span class="keyword">...</span>
+            ,string_number,<span class="string">'Color'</span>,[red green blue]);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+    ctr = ctr - 1;
+<span class="keyword">end</span>
+    ct = ct - 1;
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 17% 
+</pre><img vspace="5" hspace="5" src="keyword_finder_publishing_10.png" alt=""> <h2>Convex Hull Algorithm for Minimum Eigenvalue Features<a name="37"></a></h2><pre class="codeinput">ct5 = s_idx;
+ct6 = 1;
+<span class="keyword">while</span> (ct5 &gt; 0)
+   <span class="keyword">if</span> (idx(ct5) == mapped_sorted_array(1))
+   forwarded_points(ct6,1) = matchedScenePoints.Location(ct5,1);
+   forwarded_points(ct6,2) = matchedScenePoints.Location(ct5,2);
+   ct6 = ct6 + 1;
+   <span class="keyword">end</span>
+   ct5 = ct5 - 1;
+<span class="keyword">end</span>
+</pre><h2>Minimal area rectangle around data for Minimum Eigenvalue Features<a name="38"></a></h2><pre class="codeinput">x = matchedScenePoints.Location(:,1);
+y = matchedScenePoints.Location(:,2);
+[xrect,yrect] = minboundrect(double(x),double(y));
+figure;
+imshow(org_scene);
+title(<span class="string">' Minimal area rectangle'</span>);
+hold <span class="string">on</span>;
+plot(x,y,<span class="string">'ro'</span>,xrect,yrect,<span class="string">'b-'</span>);
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 17% 
+</pre><img vspace="5" hspace="5" src="keyword_finder_publishing_11.png" alt=""> <p>End of code</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% The Keyword Finder Function
+% The actual algorithm for the entire paper lies here. This function has
+% few dependancies on custom built function which are not listed here
+% although their source can be obtained. The 
+
+%% Initialisation
+% One image pair of bject and scene are picked up from the generated 
+% database for further evaluation. Weighing of image depending on the 
+% matchmetric rate is not carried out in this function.
+scene_path = 'D:\Research\Paper Images\OBJ 1M.jpg';
+object_path = 'D:\Research\Paper Images\OBJ 1B.jpg';
+dmode = 1;
+object_name = 'Motherboard Chip';
+image_sharpening = 0;
+%% Developer's Settings
+% Set Developer's mode to 1 to enter developers settings. 
+% Because of the complexity of the algorithm and variation 
+% of behavior of the algorithm to different inputs provided 
+% to the algorithm it was mandatory to include the developer’s settings 
+% for making it accessible for users to debug any special case 
+% input errors.
+mode = 0;
+dmode_2 = dmode;
+dmode_2 = 1;
+[~, object_name2, ~] = fileparts(object_path);
+%%
+% For overloading the function
+if nargin < 3
+    dmode =   0;
+  end
+if nargin < 4
+    object_name = object_name2; 
+end
+%% Object to find
+% The database loaded object is converted to grayscale.
+boxImage = imread(object_path);
+%%
+% Save the original colour image for display before obtaining luminsescence
+% values and overwriting the original object created.
+org_img = boxImage;
+boxImage = rgb2gray(boxImage);
+%% Output pure object
+% We output the object matrix of greyscale values on the display if
+% developer's mode is ON
+if dmode
+   figure();
+   imshow(org_img);
+   title(object_name);
+end
+%% Output to Scene
+% Image with multiple objects including target object
+sceneImage = imread(scene_path);
+org_scene = sceneImage;
+sceneImage = rgb2gray(sceneImage);
+if dmode
+figure();
+imshow(org_scene);
+title('Scene Image');
+end
+%% Image Sharpening Custom Function
+% Image sharpening is a custom dual gradient based function that is only
+% used if the input image consists of fewer luminescence variations or
+% consists of considerable amount of noise.
+if image_sharpening
+    sceneImage = image_sharpen (sceneImage,dmode);
+end
+%% Use of SURF Feature generation
+boxPoints = detectSURFFeatures(boxImage);
+scenePoints = detectSURFFeatures(sceneImage);
+%%
+% Display object output if asked
+if dmode_2
+figure;
+imshow(org_img);
+title('Feature Points from Box Image');
+hold on;
+plot(boxPoints);
+%%
+% Display scene output if asked
+figure;
+imshow(org_scene);
+title('Feature Points from Scene Image');
+hold on;
+plot(scenePoints);
+end
+%% Generate Feature descriptors
+[boxFeatures, boxPoints] = extractFeatures(boxImage, boxPoints);
+[sceneFeatures, scenePoints] = extractFeatures(sceneImage, scenePoints);
+%% Match feature descriptors
+[boxPairs, matchmetric] = matchFeatures(boxFeatures, sceneFeatures);
+%% Display matched descriptors
+matchedBoxPoints = boxPoints(boxPairs(:, 1), :);
+matchedScenePoints = scenePoints(boxPairs(:, 2), :);
+if dmode_2
+figure;
+showMatchedFeatures(org_img, org_scene, matchedBoxPoints, ...
+    matchedScenePoints, 'montage');
+title('Direct Matching');
+end
+%% K-Means ML Algorithm
+% We form cluster of feature points based on their location, thus enabling
+% us to increase the probability of finding the correct location of matched
+% points. A uniform distribution of cluster of the datapoints represents
+% the abscence of the object in the scene or presence of another image
+% completely identical to the object image.
+k = 10;
+fprintf('Value of K for K-Means Algorithm = %d\n',k);
+idx = kmeans(matchedScenePoints.Location,k);
+%% Algo Breakdown
+% For the effective plotting of the clustered points on to the image with
+% colour variations.
+ct3 = k;
+while (ct3 > 0)
+    sorter(ct3) = 0;
+    mapped_sorted_array(ct3) = 0;
+    ct3 = ct3 - 1;
+end
+[s_idx,~] = size(idx);
+ct2 = s_idx;
+while (ct2 > 0)
+    sorter(idx(ct2)) = sorter(idx(ct2)) + 1;
+    ct2 = ct2 - 1;
+end
+%% Sorting Algo
+maxn = max(sorter);
+stored_maxn = maxn;
+global_counter = 1;
+flag_1 = 0;
+endpoint = 1;
+flag_3 = 1;
+while (maxn > -1)
+ct4 = k;
+while (ct4 > 0)
+    if (sorter(ct4) == maxn)
+        if (flag_1 == 1 && flag_3 == 1)
+            endpoint = endpoint + 1;
+        end
+        flag_1 = 1;
+        mapped_sorted_array(global_counter) = ct4;
+        global_counter = global_counter + 1;
+    end 
+ct4 = ct4 - 1;
+end
+flag_1 = 0;
+flag_3 = 0;
+maxn = maxn - 1;
+end
+%% Display of Sorter and Mapped Sorted array for F Measure calculations
+sorter
+mapped_sorted_array
+fprintf('\n\nTotal Database Size = %f \n',s_idx);
+fprintf('Values Selected by Algo (TP + FP) = %f (Number of Points in Cluster with Maximum Points)\n',stored_maxn);
+%% Plotting Clustered Points
+% The following is independent of developer's settings as it plays an
+% important role in generation of F1 Score.
+figure;
+imshow(org_scene);
+title('K-Means Clustering');
+hold on;
+ct = matchedScenePoints.Count;
+spacer_multiplier = 0;
+while (ct > 0)
+ctr = k;
+while (ctr > 0)
+if (idx(ct) == ctr)
+    aux_ct1 = k;
+    while (aux_ct1 > 0)
+        if (mapped_sorted_array(aux_ct1) == ctr)
+            positon_cood = aux_ct1;
+        end
+        aux_ct1 = aux_ct1 - 1;
+    end
+    string_number = int2str(positon_cood);
+    if (positon_cood < endpoint + 1)     
+        text((double(matchedScenePoints.Location(ct,1)) + ct * spacer_multiplier)...
+            ,double(matchedScenePoints.Location(ct,2))...
+            ,string_number,'Color',[1 0 0]);
+    else
+        if (k < 20)
+            red = 0;
+            green = 1;
+            blue = 0;
+        elseif (positon_cood < (k / 3))
+            red = 0.01 * positon_cood;
+            green = 0.5;
+            blue = 0.5;
+        elseif (positon_cood < (2*k/3))
+            red = 0.7;
+            green = 0.01 * positon_cood;
+            blue = 0;
+        else
+            red = 0.01 * (k - positon_cood);
+            green = 0;
+            blue = 0.01 * positon_cood;
+        end
+        text((double(matchedScenePoints.Location(ct,1)) + ct * spacer_multiplier)...
+            ,double(matchedScenePoints.Location(ct,2))...
+            ,string_number,'Color',[red green blue]);
+    end
+end
+    ctr = ctr - 1;
+end
+    ct = ct - 1;
+end
+%% Convex Hull Algorithm Call
+% For plotting a polygon onto the obtained precise object location such
+% that the points obtained to be engulfed either lie *on* the polygon or
+% *inside* it.
+%%
+% Counter for loops
+ct5 = s_idx;
+ct6 = 1;
+%%
+% Rearrangement of points for obtaining sorted database for further display
+% and processing.
+while (ct5 > 0)
+   if (idx(ct5) == mapped_sorted_array(1)) 
+   forwarded_points(ct6,1) = matchedScenePoints.Location(ct5,1);
+   forwarded_points(ct6,2) = matchedScenePoints.Location(ct5,2);
+   ct6 = ct6 + 1;
+   end
+ct5 = ct5 - 1;   
+end
+%% Minimal area rectangle around data
+% We also draw a square around the object using polygon points to get the
+% location of object.
+x = matchedScenePoints.Location(:,1);
+y = matchedScenePoints.Location(:,2);
+[xrect,yrect] = minboundrect(double(x),double(y));
+figure;
+imshow(org_scene);
+title(' Minimal area rectangle');
+hold on;
+plot(x,y,'ro',xrect,yrect,'b-');
+
+%% Minimum Eigenvalue features to generate a Hybrid engine for computation.
+
+%% Generation of Minimum Eigenvalue features
+boxPoints = detectMinEigenFeatures(boxImage);
+scenePoints = detectMinEigenFeatures(sceneImage);
+%%
+% Display of features of Object image of Minimum Eigenvalue Features
+if dmode_2
+figure;
+imshow(org_img);
+title('Feature Points from Box Image');
+hold on;
+plot(boxPoints);
+%%
+% Display of features of Scene image of Minimum Eigenvalue Features
+figure;
+imshow(org_scene);
+title('Feature Points from Scene Image');
+hold on;
+plot(scenePoints);
+end
+%% K-Means ML Algorithm for Minimum Eigenvalue Feature Algorithm
+k = 10;
+fprintf('Value of K for K-Means Algorithm = %d\n',k);
+matchedScenePoints = scenePoints;
+idx = kmeans(matchedScenePoints.Location,k);
+%% Algo Breakdown for Minimum Eigenvalue Features
+% Exactly same as previously done except now with Minimum Eigenvalue
+% Features
+
+
+%%
+% Counters for loops
+ct3 = k;
+while (ct3 > 0)
+    sorter(ct3) = 0;
+    mapped_sorted_array(ct3) = 0;
+    ct3 = ct3 - 1;
+end
+[s_idx,~] = size(idx);
+ct2 = s_idx;
+while (ct2 > 0)
+    sorter(idx(ct2)) = sorter(idx(ct2)) + 1;
+    ct2 = ct2 - 1;
+end
+%% Sorting Algorithm
+% For generation of sorted clustered points.
+maxn = max(sorter);
+stored_maxn = maxn;
+global_counter = 1;
+flag_1 = 0;
+endpoint = 1;
+flag_3 = 1;
+while (maxn > -1)
+ct4 = k;
+while (ct4 > 0)
+    if (sorter(ct4) == maxn)
+        if (flag_1 == 1 && flag_3 == 1)
+            endpoint = endpoint + 1;
+        end
+        flag_1 = 1;
+        mapped_sorted_array(global_counter) = ct4;
+        global_counter = global_counter + 1;
+    end 
+ct4 = ct4 - 1;
+end
+flag_1 = 0;
+flag_3 = 0;
+maxn = maxn - 1;
+end
+sorter
+mapped_sorted_array
+fprintf('\n\nTotal Database Size = %f \n',s_idx);
+fprintf('Values Selected by Algo (TP + FP) = %f (Number of Points in Cluster with Maximum Points)\n',stored_maxn);
+%% Plotting Minimum Eigenvalue Features Clustered Points
+figure;
+imshow(org_scene);
+title('K-Means Clustering');
+hold on;
+ct = matchedScenePoints.Count;
+spacer_multiplier = 0;
+while (ct > 0)
+ctr = k;
+while (ctr > 0)
+if (idx(ct) == ctr)
+    aux_ct1 = k;
+    while (aux_ct1 > 0)      
+        if (mapped_sorted_array(aux_ct1) == ctr)           
+            positon_cood = aux_ct1;            
+        end
+        aux_ct1 = aux_ct1 - 1;
+    end   
+    string_number = int2str(positon_cood);  
+    if (positon_cood < endpoint + 1)     
+        text((double(matchedScenePoints.Location(ct,1)) + ct * spacer_multiplier)...
+            ,double(matchedScenePoints.Location(ct,2))...
+            ,string_number,'Color',[1 0 0]);
+    else
+        if (k < 20)        
+            red = 0;
+            green = 1;
+            blue = 0;        
+        elseif (positon_cood < (k / 3))
+            red = 0.01 * positon_cood;
+            green = 0.5;
+            blue = 0.5;
+        elseif (positon_cood < (2*k/3))
+            red = 0.7;
+            green = 0.01 * positon_cood;
+            blue = 0;
+        else
+            red = 0.01 * (k - positon_cood);
+            green = 0;
+            blue = 0.01 * positon_cood;
+        end
+        text((double(matchedScenePoints.Location(ct,1)) + ct * spacer_multiplier)...
+            ,double(matchedScenePoints.Location(ct,2))...
+            ,string_number,'Color',[red green blue]);
+    end
+end
+    ctr = ctr - 1;
+end
+    ct = ct - 1;
+end
+%% Convex Hull Algorithm for Minimum Eigenvalue Features
+
+ct5 = s_idx;
+ct6 = 1;
+while (ct5 > 0)    
+   if (idx(ct5) == mapped_sorted_array(1)) 
+   forwarded_points(ct6,1) = matchedScenePoints.Location(ct5,1);
+   forwarded_points(ct6,2) = matchedScenePoints.Location(ct5,2);
+   ct6 = ct6 + 1;
+   end
+   ct5 = ct5 - 1;   
+end
+%% Minimal area rectangle around data for Minimum Eigenvalue Features
+
+x = matchedScenePoints.Location(:,1);
+y = matchedScenePoints.Location(:,2);
+[xrect,yrect] = minboundrect(double(x),double(y));
+figure;
+imshow(org_scene);
+title(' Minimal area rectangle');
+hold on;
+plot(x,y,'ro',xrect,yrect,'b-');
+
+%%
+% End of code
+##### SOURCE END #####
+--></body></html>
